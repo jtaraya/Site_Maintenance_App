@@ -47,5 +47,19 @@ public class App {
             return new ModelAndView(model, "engineer-add-form.hbs");
         }, new HandlebarsTemplateEngine());
 
+        post("/engineer/new", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
+            List<Engineer> engineers = engineerDao.getAll();
+            int emp_no = Integer.parseInt(request.queryParams("emp_no"));
+            String name = request.queryParams("name");
+            Engineer newEngineer = new Engineer(name, emp_no);
+            System.out.println(name);
+            engineerDao.add(newEngineer);
+//            newEngineer.getEngineerDetails();
+            model.put("engineers", engineers);
+            return new ModelAndView(model, "/engineer-success.hbs");
+
+        }, new HandlebarsTemplateEngine());
+
     }
 }
