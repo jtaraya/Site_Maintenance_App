@@ -98,6 +98,26 @@ public class App {
         }, new HandlebarsTemplateEngine());
 
 
+        //task: process new site form
+        post("/sites", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            List<Engineer> engineers = engineerDao.getAll();
+            List<Site> allSites = siteDao.getAll();
+            model.put("sites", allSites);
+//            int Id = Integer.parseInt(req.params("id"));
+            int siteId = Integer.parseInt(req.queryParams("siteId"));
+            String siteName = req.queryParams("siteName");
+            String siteNumber = req.queryParams("siteId");
+            String engineerName = req.queryParams("engineerName");
+            Site newSite = new Site(siteId, siteName , engineerName);
+            siteDao.add(newSite);
+            System.out.println(newSite.getEngineerName());
+            model.put("sites", allSites);
+            res.redirect("/sites/all-sites");
+            return null;
+        }, new HandlebarsTemplateEngine());
+
+
 
     }
 }
