@@ -194,6 +194,39 @@ public class App {
             return null;
         }, new HandlebarsTemplateEngine());
 
+        //get: delete all engineers
+        get("/engineers/delete", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            engineerDao.clearAllEngineers();
+//            siteDao.clearAllSites();
+            return new ModelAndView(model,"delete_success.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        //get: delete all sites
+        get("/sites/delete", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            siteDao.clearAllSites();
+            return new ModelAndView(model,"delete_success.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        // get: delete a site
+        get("/sites/:id/delete", (req, res)->{
+            Map<String, Object> model = new HashMap<>();
+            int idOfSiteToDelete = Integer.parseInt(req.params("id"));
+            siteDao.deleteById(idOfSiteToDelete);
+            return new ModelAndView(model,"delete_success.hbs");
+        }, new HandlebarsTemplateEngine ());
+
+
+
+        // get: delete an engineer
+        get("/engineers/:id/delete", (req, res) -> {
+            Map<String, Object> model=new HashMap<>();
+            int idOfEngineerToDelete=Integer.parseInt(req.params("id"));
+            engineerDao.deleteById(idOfEngineerToDelete);
+            return new ModelAndView(model,"delete_success.hbs");
+        }, new HandlebarsTemplateEngine());
+
 
 
     }
