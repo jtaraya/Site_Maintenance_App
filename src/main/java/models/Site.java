@@ -1,6 +1,7 @@
 package models;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Site {
 
@@ -84,6 +85,25 @@ public class Site {
 
     public void setDecommissioned(boolean decommissioned) {
         this.decommissioned = decommissioned;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Site)) return false;
+        Site site = (Site) o;
+        return getId() == site.getId() &&
+                getSiteId() == site.getSiteId() &&
+                getEngineerId() == site.getEngineerId() &&
+                isDecommissioned() == site.isDecommissioned() &&
+                getSiteName().equals(site.getSiteName()) &&
+                Objects.equals(getEngineerName(), site.getEngineerName()) &&
+                Objects.equals(getCreatedAt(), site.getCreatedAt());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getSiteId(), getSiteName(), getEngineerId(), getEngineerName(), getCreatedAt(), isDecommissioned());
     }
 
 
