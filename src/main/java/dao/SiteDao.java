@@ -1,6 +1,10 @@
 package dao;
 
-public class SiteDao {
+import models.Site;
+
+import java.util.List;
+
+public interface SiteDao {
 
     // LIST
     List<Site> getAll();
