@@ -2,12 +2,15 @@ package dao;
 
 import models.Engineer;
 import models.Site;
+import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import org.sql2o.Sql2oException;
 
 import java.util.List;
 
 public class Sql2OEngineerDao implements EngineerDao {
 
+    private static final Sql2OEngineerDao DB = ;
     private final Sql2o sql2o;
 
     public Sql2OEngineerDao(Sql2o sql2o){
@@ -17,6 +20,22 @@ public class Sql2OEngineerDao implements EngineerDao {
     @Override
     public List<Engineer> getAll() {
         return null;
+    }
+
+    @Override
+    public void add(Engineer engineer) {
+        String sql = "INSERT INTO engineers (name, emp_no)" + "VALUES (:name, :emp_no);";
+
+        try(Connection con = DB.sql2o.open()){
+            int id = (int) con.createQuery(sql, true)
+                    .bind(engineer)
+                    .executeUpdate()
+                    .getKey();
+            engineer.setId(id);
+            System.out.println(sql);
+        } catch (Sql2oException ex) {
+            System.out.println();
+        }
     }
 
     @Override
