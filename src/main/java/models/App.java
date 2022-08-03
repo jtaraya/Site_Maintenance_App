@@ -61,5 +61,31 @@ public class App {
 
         }, new HandlebarsTemplateEngine());
 
+        //get: show all sites in all engineers and show all Engineers
+        get("/engineer/all-engineers", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            List<Engineer> allEngineers = engineerDao.getAll();
+            model.put("engineers", allEngineers);
+            List<Site> sites = siteDao.getAll();
+            model.put("sites", sites);
+            return new ModelAndView(model, "all-engineers.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        //        Get details of each engineer
+        get("/engineers/:id", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
+            int idOfEngineerToFind = Integer.parseInt(request.params("id"));
+            Engineer foundEngineer = engineerDao.findById(idOfEngineerToFind);
+            model.put("engineers", foundEngineer);
+            return new ModelAndView(model, "engineer_details.hbs");
+        }, new HandlebarsTemplateEngine());
+
+        get("/coming-soon.hbs", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            return new ModelAndView(model, "coming-soon.hbs");
+        }, new HandlebarsTemplateEngine());
+
+
+
     }
 }
