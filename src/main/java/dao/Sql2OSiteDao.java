@@ -11,9 +11,7 @@ public class Sql2OSiteDao implements SiteDao {
 
     private final Sql2o sql2o;
     public Sql2OSiteDao(Sql2o sql2o){
-        this.sql2o = sql2o;
-
-        //making the sql2o object available everywhere so we can call methods in it
+        this.sql2o = sql2o; //making the sql2o object available everywhere so we can call methods in it
     }
 
     @Override
@@ -63,8 +61,27 @@ public class Sql2OSiteDao implements SiteDao {
         }
     }
 
-    @Override
-    public void add(Site site) {
 
+    @Override
+    public void deleteById(int id) {
+        String sql = "DELETE from sites WHERE id=:id";
+        try (Connection con = DB.sql2o.open()) {
+            con.createQuery(sql)
+                    .addParameter("id", id)
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println();
+        }
+    }
+
+    @Override
+    public void clearAllSites() {
+        String sql = "DELETE from sites";
+        try (Connection con = DB.sql2o.open()) {
+            con.createQuery(sql)
+                    .executeUpdate();
+        } catch (Sql2oException ex){
+            System.out.println();
+        }
     }
 }
