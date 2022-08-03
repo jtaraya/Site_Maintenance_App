@@ -86,6 +86,18 @@ public class App {
         }, new HandlebarsTemplateEngine());
 
 
+        //        show new site form
+        get("/sites/new", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            List<Site> sites = siteDao.getAll();
+            model.put("sites", sites);
+            List<Engineer> engineers = engineerDao.getAll();
+            model.put("engineers", engineers);
+            model.put("sites", sites);
+            return new ModelAndView(model, "siteadd-form.hbs");
+        }, new HandlebarsTemplateEngine());
+
+
 
     }
 }
