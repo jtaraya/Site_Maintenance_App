@@ -39,5 +39,13 @@ public class App {
             return new ModelAndView(model, "index.hbs");
         }, new HandlebarsTemplateEngine());
 
+        //        get: show new engineer form
+        get("/engineers", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
+            List<Engineer> engineers = engineerDao.getAll();
+            model.put("engineers", engineers);
+            return new ModelAndView(model, "engineer-add-form.hbs");
+        }, new HandlebarsTemplateEngine());
+
     }
 }
