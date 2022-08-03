@@ -182,6 +182,18 @@ public class App {
             return new ModelAndView(model, "engineer-edit-form.hbs");
         }, new HandlebarsTemplateEngine());
 
+        //post: update an engineer
+        post("/engineers/:id/edit", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            int idOfEngineerToEdit = Integer.parseInt(req.params("id"));
+            String newName = req.queryParams("newName");
+            String newEmpNo = req.queryParams("newEmp_No");
+            String newSiteAllocation = req.queryParams("newSiteAllocation");
+            engineerDao.update(idOfEngineerToEdit, newName, newEmpNo,newSiteAllocation);
+            res.redirect("/engineer/all-engineers");
+            return null;
+        }, new HandlebarsTemplateEngine());
+
 
 
     }
