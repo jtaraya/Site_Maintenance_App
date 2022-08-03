@@ -117,6 +117,46 @@ public class App {
             return null;
         }, new HandlebarsTemplateEngine());
 
+        //task: process new site form
+        post("/sites", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            List<Engineer> engineers = engineerDao.getAll();
+            List<Site> allSites = siteDao.getAll();
+            model.put("sites", allSites);
+//            int Id = Integer.parseInt(req.params("id"));
+            int siteId = Integer.parseInt(req.queryParams("siteId"));
+            String siteName = req.queryParams("siteName");
+            String siteNumber = req.queryParams("siteId");
+            String engineerName = req.queryParams("engineerName");
+            Site newSite = new Site(siteId, siteName , engineerName);
+            siteDao.add(newSite);
+            System.out.println(newSite.getEngineerName());
+            model.put("sites", allSites);
+            res.redirect("/sites/all-sites");
+            return null;
+        }, new HandlebarsTemplateEngine());
+
+        //get: show all sites and engineers assigned
+        get("/sites/all-sites", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            List<Site> allSites = siteDao.getAll();
+            model.put("sites", allSites);
+//            model.put("engineers", allEngineers);
+            List<Engineer> engineers = engineerDao.getAll();
+            model.put("engineers", engineers);
+            return new ModelAndView(model, "all-sites-list.hbs");
+        }, new HandlebarsTemplateEngine());
+
+//
+//        Get details of each site
+        get("/sites/:id", (request, response) -> {
+            Map<String, Object> model = new HashMap<>();
+            int idOfSiteToFind = Integer.parseInt(request.params("id"));
+            Site foundSite = siteDao.findById(idOfSiteToFind);
+            model.put("sites", foundSite);   //add it to model for template to display
+            return new ModelAndView(model, "site_details.hbs");  //individual post page.
+        }, new HandlebarsTemplateEngine());
+
 
 
     }
