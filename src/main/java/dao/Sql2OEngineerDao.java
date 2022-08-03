@@ -10,16 +10,10 @@ import java.util.List;
 
 public class Sql2OEngineerDao implements EngineerDao {
 
-    private static final Sql2OEngineerDao DB = ;
     private final Sql2o sql2o;
 
     public Sql2OEngineerDao(Sql2o sql2o){
         this.sql2o = sql2o;
-    }
-
-    @Override
-    public List<Engineer> getAll() {
-        return null;
     }
 
     @Override
@@ -39,9 +33,11 @@ public class Sql2OEngineerDao implements EngineerDao {
     }
 
     @Override
-    public void add(Engineer engineer) {
-
-    }
+    public List<Engineer> getAll() {
+        try(Connection con = DB.sql2o.open()){
+            return con.createQuery("SELECT * FROM engineers")
+                    .throwOnMappingFailure(false)
+                    .executeAndFetch(Engineer.class);
 
     @Override
     public Engineer findById(int id) {
