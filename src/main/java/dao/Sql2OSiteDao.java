@@ -32,30 +32,20 @@ public class Sql2OSiteDao implements SiteDao {
     }
 
     @Override
-    public Site findById(int id) {
-        return null;
-    }
-
-    @Override
-    public void update(int id, String siteName, int siteId, String engineerName, int engineerId) {
-
-    }
-
-    @Override
-    public void deleteById(int id) {
-
-    }
-
-    @Override
-    public void clearAllSites() {
-
-    }
-
-    @Override
     public List<Site> getAll() {
         try(Connection con =DB.sql2o.open()){
             return con.createQuery("SELECT * FROM sites")
                     .executeAndFetch(Site.class);
+        }
+    }
+
+
+    @Override
+    public Site findById(int id) {
+        try(Connection con = DB.sql2o.open()){
+            return con.createQuery("SELECT * FROM sites WHERE id = :id")
+                    .addParameter("id", id)
+                    .executeAndFetchFirst(Site.class);
         }
     }
 
