@@ -158,6 +158,31 @@ public class App {
         }, new HandlebarsTemplateEngine());
 
 
+        //get: show a site that is assigned to an engineer
+        get("/engineers/:engineerId/sites/:siteId", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            int idOfSiteToFind = Integer.parseInt(req.params("siteId"));
+            Site foundSite = siteDao.findById(idOfSiteToFind);
+            int idOfEngineerToFind = Integer.parseInt(req.params("engineerId"));
+            Engineer foundEngineer = engineerDao.findById(idOfEngineerToFind);
+            model.put("sites", foundSite);
+            model.put("engineers", foundEngineer);
+            model.put("engineers", engineerDao.getAll());
+            return new ModelAndView(model, "site_details.hbs");
+        }, new HandlebarsTemplateEngine());
+
+
+        //get: show a form to update an engineer
+        get("/engineers/:id/edit", (req, res) -> {
+            Map<String, Object> model = new HashMap<>();
+            model.put("editEngineer", true);
+            Engineer engineer = engineerDao.findById(Integer.parseInt(req.params("id")));
+            model.put("engineer", engineer);
+            model.put("engineers", engineerDao.getAll());
+            return new ModelAndView(model, "engineer-edit-form.hbs");
+        }, new HandlebarsTemplateEngine());
+
+
 
     }
 }
